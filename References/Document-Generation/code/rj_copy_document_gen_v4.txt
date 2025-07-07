@@ -1,0 +1,193 @@
+Final code v4
+
+
+# Default configuration dictionary
+DEFAULT_SOLVER_CONFIG = {
+    "process_prompt": """
+        You are a universal problem solver. Here's our suggested process:
+
+        1. Analyze the problem and break into subproblems if needed
+        2. Plan and document your approach
+        3. Execute one clear step at a time
+        4. Verify results and maintain organization
+
+        Based on the current state, please:
+        1. Analyze the situation
+        2. Decide the next step
+        3. Specify EXACT changes to make to the system
+
+        Format your response as:
+        REASONING: Your analysis and decision-making process
+        CHANGES: List each change in this format:
+        - NEW CELL: <content>
+        - MODIFY CELL <id>: <new_content>
+        - SET CURRENT: <cell_id>
+        STATUS: Either "CONTINUE" or "SOLVED"
+
+        Be precise - your changes will be applied exactly as specified.
+    """,
+    
+    "state_format_template": """
+        CURRENT SYSTEM STATE
+        ===================
+        {current_focus}
+        
+        ALL CELLS:
+        {all_cells}
+    """,
+    
+    "solution_prompt": """
+        Based on the final state:
+        {state}
+        
+        Please provide the complete solution in a clear format.
+    """,
+    
+    "current_focus_template": """
+        CURRENT FOCUS:
+        Cell {cell_id}:
+        {content}
+    """,
+    
+    "cell_format_template": """
+        Cell {cell_id}:
+        {content}
+    """
+}
+
+from dataclasses import dataclass
+from typing import Dict, Any, Optional, List, Union
+import uuid
+from copy import deepcopy
+
+@dataclass
+class Cell:
+    id: str
+    content: str
+    references: List[str]
+    metadata: Dict[str, Any]
+
+@dataclass
+class SystemState:
+    cells: Dict[str, Union[Cell, 'SystemState']]
+    current_cell_id: Optional[str]
+    metadata: Dict[str, Any]
+
+def format_state(state: SystemState, config: Dict[str, str]) -> str:
+    """Format the system state using configuration templates"""
+    
+    # Format current focus
+    current_focus = ""
+    if state.current_cell_id and state.current_cell_id in state.cells:
+        current = state.cells[state.current_cell_id]
+        current_focus = config["current_focus_template"].format(
+            cell_id=state.current_cell_id,
+            content=current.content
+        )
+    
+    # Format all cells
+    all_cells = []
+    for cell_id, cell in state.cells.items():
+        if cell_id != state.current_cell_id:
+            cell_content = cell.content if isinstance(cell, Cell) else "[Subsystem]"
+            all_cells.append(config["cell_format_template"].format(
+                cell_id=cell_id,
+                content=cell_content
+            ))
+    
+    # Combine using main template
+    return config["state_format_template"].format(
+        current_focus=current_focus,
+        all_cells="\n".join(all_cells)
+    )
+
+class UniversalSolver:
+    def __init__(self, llm_interface, config: Dict[str, str] = None):
+        self.llm = llm_interface
+        self.config = config or DEFAULT_SOLVER_CONFIG
+
+    def solve(self, query: str) -> str:
+        """Main solving loop"""
+        state = SystemState(
+            cells={
+                "initial": Cell(
+                    id="initial",
+                    content=query,
+                    references=[],
+                    metadata={}
+                )
+            },
+            current_cell_id="initial",
+            metadata={}
+        )
+
+        while True:
+            state_description = format_state(state, self.config)
+            response = self.llm.get_completion(
+                f"{self.config['process_prompt']}\n\nCurrent State:\n{state_description}"
+            )
+            
+            if "STATUS: SOLVED" in response:
+                break
+                
+            state = self._apply_changes(state, response)
+
+        return self._get_solution(state)
+
+    def _apply_changes(self, state: SystemState, response: str) -> SystemState:
+        """Apply LLM-specified changes to state"""
+        new_state = deepcopy(state)
+        changes = [line.strip() for line in response.split('\n') if line.strip().startswith(('-', 'SET'))]
+        
+        for change in changes:
+            if change.startswith("- NEW CELL:"):
+                cell_id = str(uuid.uuid4())
+                content = change.split(":", 1)[1].strip()
+                new_state.cells[cell_id] = Cell(cell_id, content, [], {})
+                
+            elif change.startswith("- MODIFY CELL"):
+                cell_id = change.split()[3]
+                content = change.split(":", 1)[1].strip()
+                if cell_id in new_state.cells:
+                    new_state.cells[cell_id].content = content
+                    
+            elif change.startswith("SET CURRENT:"):
+                cell_id = change.split(":", 1)[1].strip()
+                if cell_id in new_state.cells:
+                    new_state.current_cell_id = cell_id
+                    
+        return new_state
+
+    def _get_solution(self, state: SystemState) -> str:
+        """Get final solution using configuration template"""
+        state_description = format_state(state, self.config)
+        solution_prompt = self.config["solution_prompt"].format(state=state_description)
+        return self.llm.get_completion(solution_prompt)
+
+# Example usage with different configurations
+def create_careful_solver(llm_interface):
+    careful_config = deepcopy(DEFAULT_SOLVER_CONFIG)
+    careful_config["process_prompt"] = """
+        You are a careful problem solver. Here's our process:
+        1. Double-check every assumption
+        2. Document all reasoning explicitly
+        3. Verify each step before moving on
+        [rest of prompt...]
+    """
+    return UniversalSolver(llm_interface, careful_config)
+
+def create_creative_solver(llm_interface):
+    creative_config = deepcopy(DEFAULT_SOLVER_CONFIG)
+    creative_config["process_prompt"] = """
+        You are a creative problem solver. Here's our process:
+        1. Consider multiple approaches
+        2. Look for novel connections
+        3. Think outside conventional patterns
+        [rest of prompt...]
+    """
+    return UniversalSolver(llm_interface, creative_config)
+
+# Example LLM interface
+class LLMInterface:
+    def get_completion(self, prompt: str) -> str:
+        pass

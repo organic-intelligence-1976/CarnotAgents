@@ -1,0 +1,118 @@
+Final description v2 
+
+Core Goals:
+
+Enable LLMs to tackle tasks beyond their normal limitations:
+
+Perfect accuracy in computations of any size
+Managing and editing documents of unlimited length
+Maintaining complete consistency in complex tasks
+Handling detailed state without errors or confusion
+
+
+Create a universal problem-solving system that:
+
+Works identically for any type of task
+Can improve its own operation
+Maintains reliability at any scale
+Allows perfect state tracking and recovery
+
+
+
+Key Ideas We've Used:
+
+Pure Iteration Model:
+
+Single universal operation that transforms system state
+No predetermined sequences or special cases
+Solution emerges from repeated application of the same function
+Similar to a Turing machine's step-by-step evolution
+
+
+Recursive State Structure:
+
+States can contain substates that are full systems themselves
+Complex problems naturally decompose into simpler ones
+Each level manages its own state independently
+Results flow up and down the hierarchy
+
+
+Cell-Based Memory:
+
+Information broken into manageable text chunks (cells)
+Cells can reference each other to form networks
+LLM never needs to process all information at once
+Flexible structure adapts to any kind of content
+
+
+Complete State Representation:
+
+All information captured in the system state
+No hidden variables or external dependencies
+Each state fully describes the system at that moment
+Enables perfect recreation of any point in the process
+
+
+Self-Directing Operation:
+
+LLM examines current state to decide next action
+No hardcoded workflows or strategies
+System can modify its own conventions
+Solution path emerges from state evolution
+
+
+Self-Documentation:
+
+System maintains records of its organization and decisions
+Creates and follows its own conventions
+Keeps clear trail of progress and reasoning
+Enables understanding of past operations
+
+
+
+The core insight is combining:
+
+The mathematical elegance of pure iteration
+The power of recursive decomposition
+The practicality of cell-based memory
+The flexibility of LLM-directed operation
+
+This creates a system that can theoretically handle any computational task while maintaining perfect reliability, all through the repeated application of a single, universal operation.
+
+
+
+Thanks, Aaron, for taking the time to check the positions. I'll apply to the ones you mentioned. If any position opens up in your team, especially around  the time series analysis and anomaly detection, I'd love to compete for it, both for the topic and the chance to work with you.
+Best,
+Reza
+
+
+Hi Kevin,
+
+I'd be happy to provide a reference for Dylan. I'll list below some of his qualities that I think you may find useful. Overall, I found him one of the best engineers I'd worked with when he reported to me at Course Hero.
+
+Dylan is very diligent, reliable, and timely with his responsibilities. He shows an outstanding work ethic.
+
+On the technical side, Dylan is a highly competent software engineer and knowledgeable ML engineer. He is a quick learner and implemented the company's first GPT-based course assistant within a surprisingly short timeframe. Additionally, he successfully completed various Recommendation System projects.
+
+Dylan is easy-going and pleasant to work with. Beyond his own responsibilities, he regularly supported other engineers by sharing his knowledge and expertise.
+
+Overall, I strongly believe Dylan would be a valuable asset to any company that hires him.
+
+Please feel free to reach out if you have any further questions or if you'd like to discuss anything in more detail.
+
+Best,
+
+Reza Jamei
+
+
+
+
+
+
+
+
+
+
+
+
+

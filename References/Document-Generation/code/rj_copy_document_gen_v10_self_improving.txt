@@ -1,0 +1,187 @@
+Final code v10 self improving 
+
+# config.py
+DEFAULT_SOLVER_CONFIG = {
+    "main_prompt": """
+        You are a universal problem solver. Examine the current state and either:
+        1. Say 'SOLVED' and give the solution if the problem is solved
+        2. Specify the exact next state needed to make progress
+
+        When specifying a state:
+        - Start with 'NEXT STATE:'
+        - List each cell as 'CELL: <content>'
+        - Mark the current focus with 'CURRENT CELL: <content>'
+        - End with 'END STATE'
+
+        Include your reasoning before specifying the state.
+    """,
+    "correction_prompt": """
+        I couldn't understand the state specification in your response:
+        {response}
+        Please provide the next state using this exact format:
+        NEXT STATE:
+        CELL: <first cell content>
+        CELL: <second cell content>
+        CURRENT CELL: <current focus content>
+        END STATE
+        Previous response formatting issues: {issues}
+    """,
+    "fallback_prompt": """
+        Please just list the cells for the next state, one per line, 
+        and mark one as current. Nothing else.
+    """,
+    "solution_prompt": """
+        Based on the final state:
+        {state}
+        Please provide the complete solution in a clear format.
+    """
+}
+
+# solver.py
+from dataclasses import dataclass
+from typing import Dict, Optional, Tuple, List, Any
+import uuid
+import inspect
+
+@dataclass
+class SystemState:
+    """Simple container for cells and current focus"""
+    cells: Dict[str, str]
+    current_cell_id: Optional[str]
+
+class UniversalSolver:
+    def __init__(self, llm_interface, config: Dict[str, str]):
+        self.llm = llm_interface
+        self.config = config
+
+    def solve(self, query: str) -> str:
+        state = SystemState(
+            cells={"initial": query},
+            current_cell_id="initial"
+        )
+
+        while True:
+            state_text = self._format_state(state)
+            response = self.llm.get_completion(
+                f"{self.config['main_prompt']}\nCurrent state:\n{state_text}"
+            )
+            
+            if "SOLVED" in response.upper():
+                return response
+            
+            success, result = self._try_parse_state(response)
+            if success:
+                state = result
+            else:
+                correction_response = self.llm.get_completion(
+                    self.config['correction_prompt'].format(
+                        response=response,
+                        issues=result
+                    )
+                )
+                success, result = self._try_parse_state(correction_response)
+                if success:
+                    state = result
+                else:
+                    final_response = self.llm.get_completion(self.config['fallback_prompt'])
+                    success, result = self._try_parse_state(final_response)
+                    state = result if success else self._create_fallback_state(state, response)
+
+    def _format_state(self, state: SystemState) -> str:
+        return "\n".join([
+            f"\nCell {cid}" + (" (CURRENT)" if cid == state.current_cell_id else "") + f":\n{content}"
+            for cid, content in state.cells.items()
+        ])
+
+    # [rest of UniversalSolver implementation...]
+    # Note: Other methods remain the same but reference self.config instead of hardcoded prompts
+
+# improvement.py
+def improve_solver_config(
+    solver_code: str,
+    current_config: Dict[str, str],
+    llm_interface: Any,
+    execution_logs: Optional[List[str]] = None
+) -> Dict[str, str]:
+    """
+    Use LLM to suggest improvements to solver configuration.
+    
+    Args:
+        solver_code: Source code of the UniversalSolver (without embedded prompts)
+        current_config: Current configuration dictionary
+        llm_interface: Interface to LLM for getting completions
+        execution_logs: Optional logs of solver execution
+    
+    Returns:
+        Updated configuration dictionary
+    """
+    analysis_prompt = f"""
+    You are analyzing a universal problem solver system to improve its prompts and configuration.
+    
+    The solver implementation is:
+    {solver_code}
+    
+    The current configuration is:
+    {current_config}
+    
+    {'The execution logs show:\n' + '\n'.join(execution_logs) if execution_logs else 'No execution logs provided.'}
+    
+    Please suggest improvements to the configuration to make the solver more effective.
+    Focus on:
+    1. Clarity of instructions to prevent parsing failures
+    2. Robustness of state handling
+    3. Effectiveness of error recovery
+    
+    Provide your suggestions as a complete configuration dictionary in Python format.
+    Include comments explaining key improvements.
+    """
+    
+    response = llm_interface.get_completion(analysis_prompt)
+    
+    # Have LLM verify its own output
+    verification_prompt = f"""
+    Please verify this configuration is valid Python and follows the required structure:
+    {response}
+    
+    If valid, return it unchanged. If not, fix any issues and return the corrected version.
+    """
+    
+    verified_response = llm_interface.get_completion(verification_prompt)
+    
+    # Safe eval of the configuration (in practice, would need more robust parsing)
+    try:
+        # This is a simplified example - would need proper safety measures in production
+        new_config = eval(verified_response)
+        return new_config
+    except Exception as e:
+        # If parsing fails, return current config
+        print(f"Failed to parse new configuration: {e}")
+        return current_config
+
+# Example usage
+def get_solver_code() -> str:
+    """Get the solver implementation code without embedded prompts"""
+    return inspect.getsource(UniversalSolver)
+
+# Example LLM interface
+class LLMInterface:
+    def get_completion(self, prompt: str) -> str:
+        pass
+
+def main():
+    llm = LLMInterface()
+    solver = UniversalSolver(llm, DEFAULT_SOLVER_CONFIG)
+    
+    # After some usage, improve the configuration
+    solver_code = get_solver_code()
+    execution_logs = ["Example log entry 1", "Example log entry 2"]
+    
+    improved_config = improve_solver_config(
+        solver_code,
+        DEFAULT_SOLVER_CONFIG,
+        llm,
+        execution_logs
+    )
+    
+    # Create new solver with improved configuration
+    improved_solver = UniversalSolver(llm, improved_config)

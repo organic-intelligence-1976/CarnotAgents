@@ -1,0 +1,212 @@
+LangGraph and LangChain v2
+
+
+from typing import Dict, List, Optional, Any
+from dataclasses import dataclass, field
+from datetime import datetime
+from langgraph.graph import Graph
+from langchain.prompts import PromptTemplate
+from langchain.chat_models import ChatOpenAI
+import json
+from copy import deepcopy
+
+@dataclass
+class ProjectNode:
+    id: str
+    goal: str
+    content: Dict[str, Any] = field(default_factory=dict)
+    summary: str = ""
+    children: Dict[str, 'ProjectNode'] = field(default_factory=dict)
+    parent_id: Optional[str] = None
+
+@dataclass
+class SystemState:
+    nodes: Dict[str, ProjectNode]
+    current_focus_id: str
+    history: List[Dict[str, Any]] = field(default_factory=list)
+
+    def get_current_node(self) -> ProjectNode:
+        return self.nodes[self.current_focus_id]
+
+    def get_path_to_current(self) -> List[ProjectNode]:
+        path = []
+        node_id = self.current_focus_id
+        while node_id:
+            node = self.nodes[node_id]
+            path.append(node)
+            node_id = node.parent_id
+        return list(reversed(path))
+
+class ProjectSystem:
+    def __init__(self, llm=None):
+        self.llm = llm or ChatOpenAI(temperature=0.7)
+        self.graph = self._create_graph()
+        
+    def create_project(self, goal: str) -> SystemState:
+        root_node = ProjectNode(id="root", goal=goal)
+        return SystemState(
+            nodes={"root": root_node},
+            current_focus_id="root"
+        )
+
+    def _create_graph(self) -> Graph:
+        # Define core nodes
+        nodes = {
+            "analyze_state": self._analyze_current_state,
+            "generate_content": self._generate_content,
+            "parse_content": self._parse_content,
+            "update_structure": self._update_structure,
+            "propagate_summaries": self._propagate_summaries
+        }
+
+        # Define edges
+        edges = {
+            "analyze_state": "generate_content",
+            "generate_content": "parse_content",
+            "parse_content": ["update_structure", "analyze_state"],
+            "update_structure": "propagate_summaries",
+            "propagate_summaries": "analyze_state"
+        }
+
+        return Graph(nodes, edges)
+
+    def _analyze_current_state(self, state: SystemState) -> SystemState:
+        """Decide next action based on current state"""
+        current = state.get_current_node()
+        path = state.get_path_to_current()
+        
+        # Create analysis prompt
+        context = "\n".join([
+            f"Level {i}: {node.goal} - {node.summary}"
+            for i, node in enumerate(path)
+        ])
+        
+        analysis = self.llm.predict(
+            f"""Given this context of the current project state:
+            {context}
+            
+            Current focus is on: {current.goal}
+            Current content: {json.dumps(current.content, indent=2)}
+            
+            Suggest the next best action as either:
+            1. Add content to current node
+            2. Create a sub-project
+            3. Move focus to parent
+            4. Mark current node as complete
+            
+            Respond in JSON format with 'action' and 'reason' fields.
+            """
+        )
+        
+        # Add analysis to history and return
+        new_state = deepcopy(state)
+        new_state.history.append({"type": "analysis", "content": analysis})
+        return new_state
+
+    def _generate_content(self, state: SystemState) -> SystemState:
+        """Generate new content for current focus"""
+        current = state.get_current_node()
+        new_state = deepcopy(state)
+        
+        content = self.llm.predict(
+            f"""Generate content for this project node:
+            Goal: {current.goal}
+            Existing content: {json.dumps(current.content, indent=2)}
+            
+            Provide content in JSON format that adds to or refines existing content.
+            """
+        )
+        
+        new_state.history.append({"type": "generation", "content": content})
+        return new_state
+
+    def _parse_content(self, state: SystemState) -> SystemState:
+        """Parse and validate generated content"""
+        new_state = deepcopy(state)
+        last_generation = next(
+            (h["content"] for h in reversed(state.history) 
+             if h["type"] == "generation"), 
+            None
+        )
+        
+        if not last_generation:
+            return new_state
+            
+        try:
+            parsed = json.loads(last_generation)
+            new_state.history.append({
+                "type": "parsing",
+                "status": "success",
+                "content": parsed
+            })
+        except json.JSONDecodeError:
+            # Attempt recovery through LLM
+            recovery = self.llm.predict(
+                f"""The following content needs to be converted to valid JSON:
+                {last_generation}
+                
+                Please provide valid JSON only in your response.
+                """
+            )
+            new_state.history.append({
+                "type": "parsing",
+                "status": "recovered",
+                "content": recovery
+            })
+            
+        return new_state
+
+    def _update_structure(self, state: SystemState) -> SystemState:
+        """Update project structure with new content"""
+        new_state = deepcopy(state)
+        last_parsed = next(
+            (h["content"] for h in reversed(state.history) 
+             if h["type"] == "parsing"), 
+            None
+        )
+        
+        if last_parsed:
+            current = new_state.get_current_node()
+            current.content.update(last_parsed)
+            
+        return new_state
+
+    def _propagate_summaries(self, state: SystemState) -> SystemState:
+        """Update summaries up the tree"""
+        new_state = deepcopy(state)
+        current = new_state.get_current_node()
+        
+        # Generate summary for current node
+        summary = self.llm.predict(
+            f"""Summarize this project node:
+            Goal: {current.goal}
+            Content: {json.dumps(current.content, indent=2)}
+            Child summaries: {[c.summary for c in current.children.values()]}
+            
+            Provide a brief summary (max 100 words) that captures key points.
+            """
+        )
+        
+        current.summary = summary
+        
+        # Propagate up if needed
+        node_id = current.parent_id
+        while node_id:
+            parent = new_state.nodes[node_id]
+            parent_summary = self.llm.predict(
+                f"""Update summary based on child change:
+                Parent goal: {parent.goal}
+                Parent content: {json.dumps(parent.content, indent=2)}
+                Child summaries: {[c.summary for c in parent.children.values()]}
+                
+                Provide a brief summary (max 100 words) that captures key points.
+                """
+            )
+            parent.summary = parent_summary
+            node_id = parent.parent_id
+            
+        return new_state
+
+    def run(self, state: SystemState) -> SystemState:
+        """Run the project system on given state"""
+        return self.graph.run(state)

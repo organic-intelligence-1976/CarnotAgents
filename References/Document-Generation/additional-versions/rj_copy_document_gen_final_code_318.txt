@@ -1,0 +1,165 @@
+Final Code 3:18
+
+
+from typing import Dict, List, Optional, Any, Tuple, Callable
+from dataclasses import dataclass, field
+from datetime import datetime
+import json
+from enum import Enum
+from uuid import uuid4
+
+class ParseResult(Enum):
+    SUCCESS = "success"
+    NEEDS_CLARIFICATION = "needs_clarification"
+    PARTIAL = "partial"
+    FAILURE = "failure"
+
+@dataclass
+class ContentParseResult:
+    status: ParseResult
+    content: Optional[Any] = None
+    clarification_needed: Optional[str] = None
+    partial_understanding: Optional[Dict[str, Any]] = None
+
+@dataclass
+class ProjectNode:
+    goal: str
+    id: str = field(default_factory=lambda: str(uuid4()))
+    created_at: datetime = field(default_factory=datetime.now)
+    fields: Dict[str, Any] = field(default_factory=dict)
+    subprojects: Dict[str, 'ProjectNode'] = field(default_factory=dict)
+    summary: Dict[str, Any] = field(default_factory=dict)
+    parent: Optional['ProjectNode'] = field(default=None, repr=False)
+
+    def add_content(self, content: str, field_name: Optional[str] = None) -> ContentParseResult:
+        """Add content to the project, returning parse results for potential clarification"""
+        parser = ContentParser(self)
+        result = parser.parse(content)
+        
+        if result.status == ParseResult.SUCCESS:
+            if field_name:
+                self.fields[field_name] = result.content
+            else:
+                # Smart field creation based on content
+                field_name = f"content_{len(self.fields)}"
+                self.fields[field_name] = result.content
+            self._propagate_changes()
+            
+        return result
+
+    def create_subproject(self, goal: str) -> 'ProjectNode':
+        """Create a new subproject"""
+        subproject = ProjectNode(goal=goal, parent=self)
+        self.subprojects[subproject.id] = subproject
+        self._propagate_changes()
+        return subproject
+
+    def update_summary(self) -> None:
+        """Update node's summary based on current state and subprojects"""
+        # Summarize current node's content
+        local_summary = self._summarize_local_content()
+        
+        # Combine with subproject summaries
+        sub_summaries = {name: proj.summary for name, proj in self.subprojects.items()}
+        
+        self.summary = {
+            "local": local_summary,
+            "subprojects": sub_summaries,
+            "opportunities": self._identify_opportunities(),
+            "last_updated": datetime.now()
+        }
+        
+        if self.parent:
+            self.parent._propagate_changes()
+
+    def _propagate_changes(self) -> None:
+        """Handle change propagation through the tree"""
+        self.update_summary()
+
+    def _summarize_local_content(self) -> Dict[str, Any]:
+        """Create a summary of this node's local content"""
+        # Implementation would use LLM to create intelligent summary
+        return {
+            "fields": list(self.fields.keys()),
+            "content_summary": "Summary would go here"
+        }
+
+    def _identify_opportunities(self) -> List[str]:
+        """Identify opportunities for further development"""
+        # Implementation would use LLM to identify opportunities
+        return []
+
+class ContentParser:
+    def __init__(self, project_node: ProjectNode):
+        self.project_node = project_node
+
+    def parse(self, content: str) -> ContentParseResult:
+        """Parse content with graceful degradation"""
+        # First try full parsing
+        try:
+            parsed_content = self._full_parse(content)
+            return ContentParseResult(
+                status=ParseResult.SUCCESS,
+                content=parsed_content
+            )
+        except Exception as e:
+            # Try partial parsing
+            partial = self._partial_parse(content)
+            if partial:
+                return ContentParseResult(
+                    status=ParseResult.PARTIAL,
+                    partial_understanding=partial,
+                    clarification_needed="Please clarify the following aspects..."
+                )
+            
+            # Request clarification
+            return ContentParseResult(
+                status=ParseResult.NEEDS_CLARIFICATION,
+                clarification_needed=self._generate_clarification_request(content)
+            )
+
+    def _full_parse(self, content: str) -> Any:
+        """Attempt full parsing of content"""
+        # Implementation would handle different content types
+        pass
+
+    def _partial_parse(self, content: str) -> Optional[Dict[str, Any]]:
+        """Attempt to extract partial understanding"""
+        # Implementation would extract what it can understand
+        pass
+
+    def _generate_clarification_request(self, content: str) -> str:
+        """Generate a specific clarification request"""
+        # Implementation would create targeted questions
+        pass
+
+class ProjectManager:
+    def __init__(self, llm_context: str):
+        self.root: Optional[ProjectNode] = None
+        self.llm_context = llm_context
+        self.history: List[Dict[str, Any]] = []
+
+    def create_project(self, goal: str) -> ProjectNode:
+        """Create a new root project"""
+        self.root = ProjectNode(goal=goal)
+        return self.root
+
+    def get_node(self, node_id: str) -> Optional[ProjectNode]:
+        """Retrieve a node by ID"""
+        # Implementation would traverse tree to find node
+        pass
+
+    def suggest_next_action(self) -> Dict[str, Any]:
+        """Use LLM to suggest next action based on current state"""
+        # Implementation would use LLM to analyze current state
+        pass
+
+    def save_state(self) -> Dict[str, Any]:
+        """Export entire project state"""
+        # Implementation would handle serialization
+        pass
+
+    def load_state(self, state: Dict[str, Any]) -> None:
+        """Import project state"""
+        # Implementation would handle deserialization
+        pass

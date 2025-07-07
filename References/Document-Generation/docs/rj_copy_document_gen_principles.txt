@@ -1,0 +1,70 @@
+Enhanced Set of Principles:
+
+Basic Recursive Structure:
+
+
+A project is a node with a goal field and flexible additional fields
+Forms a recursive tree through sub-projects when decomposition helps
+Structure and content can be dynamically modified
+
+
+Implementation-Guided:
+
+
+LLM has access to system implementation code
+Uses this understanding to guide what content to generate next
+Knows how its generated content fits into the larger system
+
+
+Progressive Resolution:
+
+
+Solution evolves from coarse to fine detail
+Maintains balance across branches
+Prefers breadth-first development
+Decomposition follows understanding
+
+
+Meta-Learning:
+
+
+Self-examines generated content
+Updates prompting strategies based on outcomes
+Includes configuration improvement mechanisms
+Learns from parsing failures and successes
+
+
+Non-Deterministic Exploration:
+
+
+Follows emergent opportunities
+Maintains flexibility in path choice
+Balances systematic and spontaneous exploration
+
+
+Hierarchical Awareness:
+
+
+Dynamic rollup of insights and progress
+Executive summaries at each level
+Root provides birds-eye view
+Support for drilling down
+Tracks opportunities and open questions
+
+
+Pure Functional Core:
+
+
+State transitions handled as pure transformations
+Clear input/output contracts between components
+Predictable and testable behavior
+Side effects isolated at system boundaries
+
+
+Robust Communication Protocol:
+
+
+Structured dialogue between components
+Graceful degradation when perfect parsing fails
+Feedback loop for format correction ("pardon me?")
+Multiple fallback strategies for recovery

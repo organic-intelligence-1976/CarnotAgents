@@ -1,0 +1,209 @@
+Final GPT suggestion
+
+
+import copy
+import math
+
+### Mock LLM and Embedding Functions ###
+
+def call_llm(prompt, model="dummy"):
+    # Mock LLM call
+    return f"LLM response to: '{prompt}' (model: {model})"
+
+def get_embedding(text):
+    # Mock embedding: represent text as a vector of character counts
+    # Just a simplistic placeholder.
+    return [len(text)]
+
+def cosine_similarity(a, b):
+    # Very basic similarity (since we're using length-only embeddings)
+    # In real code, you'd use a proper vector similarity measure.
+    return 1 - abs(a[0] - b[0]) / max(a[0], b[0]) if max(a[0], b[0]) > 0 else 1
+
+
+### State Management ###
+
+class Store:
+    """
+    A global store holding state.
+    State is updated by dispatching actions that reducers handle.
+    """
+    def __init__(self, initial_state):
+        self.state = initial_state
+        self.reducers = {}
+        self.listeners = []
+
+    def register_reducer(self, name, reducer):
+        self.reducers[name] = reducer
+
+    def dispatch(self, action):
+        new_state = self.state
+        for reducer_name, reducer in self.reducers.items():
+            new_state = reducer(new_state, action)
+        if new_state != self.state:
+            self.state = new_state
+            for listener in self.listeners:
+                listener(self.state)
+
+    def get_state(self):
+        return self.state
+
+    def subscribe(self, listener):
+        self.listeners.append(listener)
+
+# Initial State
+initial_state = {
+    "cells": {},     # id -> {"dependencies": [...], "compute": fn, "value": any}
+    "memory": {       # Simple memory system
+        "embeddings": [],  # list of embeddings
+        "metadata": []     # parallel list of metadata
+    },
+    "context": {       # Example of global context
+        "current_query": ""
+    }
+}
+
+store = Store(initial_state)
+
+### Reducers ###
+
+def cell_reducer(state, action):
+    if action["type"] == "DEFINE_CELL":
+        new_state = copy.deepcopy(state)
+        payload = action["payload"]
+        new_state["cells"][payload["id"]] = {
+            "dependencies": payload["dependencies"],
+            "compute": payload["compute_fn"],
+            "value": None
+        }
+        return new_state
+
+    elif action["type"] == "UPDATE_CELL_VALUE":
+        new_state = copy.deepcopy(state)
+        new_state["cells"][action["payload"]["id"]]["value"] = action["payload"]["value"]
+        return new_state
+
+    return state
+
+def memory_reducer(state, action):
+    if action["type"] == "ADD_MEMORY_ENTRY":
+        new_state = copy.deepcopy(state)
+        new_state["memory"]["embeddings"].append(action["payload"]["embedding"])
+        new_state["memory"]["metadata"].append(action["payload"]["metadata"])
+        return new_state
+    return state
+
+def context_reducer(state, action):
+    if action["type"] == "UPDATE_CONTEXT":
+        new_state = copy.deepcopy(state)
+        new_state["context"].update(action["payload"])
+        return new_state
+    return state
+
+store.register_reducer("cells", cell_reducer)
+store.register_reducer("memory", memory_reducer)
+store.register_reducer("context", context_reducer)
+
+
+### Reactive Cell System ###
+
+def resolve_dependency_value(dep):
+    # Dependencies can be:
+    # - a tuple like ("cell", cell_id)
+    # - a tuple like ("context", "current_query")
+    # Extend as needed.
+    s = store.get_state()
+    dep_type, dep_key = dep
+    if dep_type == "cell":
+        return s["cells"][dep_key]["value"]
+    elif dep_type == "context":
+        return s["context"][dep_key]
+    else:
+        return None
+
+def recompute_cells(*args):
+    # Called after state changes
+    changed = True
+    while changed:
+        changed = False
+        s = store.get_state()
+        for cell_id, cell in s["cells"].items():
+            dep_values = [resolve_dependency_value(d) for d in cell["dependencies"]]
+            new_value = cell["compute"](*dep_values)
+            if new_value != cell["value"]:
+                store.dispatch({"type": "UPDATE_CELL_VALUE", "payload": {"id": cell_id, "value": new_value}})
+                changed = True
+
+store.subscribe(recompute_cells)  # Run recomputation after every state change
+
+
+### Memory System Functions ###
+
+def add_to_memory(text, metadata={}):
+    embedding = get_embedding(text)
+    store.dispatch({
+        "type": "ADD_MEMORY_ENTRY",
+        "payload": {"embedding": embedding, "metadata": metadata}
+    })
+
+def retrieve_from_memory(query, top_k=3):
+    query_embedding = get_embedding(query)
+    s = store.get_state()
+    embeddings = s["memory"]["embeddings"]
+    metas = s["memory"]["metadata"]
+    scored = []
+    for i, e in enumerate(embeddings):
+        score = cosine_similarity(query_embedding, e)
+        scored.append((score, metas[i]))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    return scored[:top_k]
+
+
+### Example LLM Pipeline ###
+
+def run_pipeline(query):
+    # A very simple pipeline:
+    # 1. Retrieve relevant memory
+    # 2. Build a prompt
+    # 3. Call LLM
+    relevant = retrieve_from_memory(query)
+    context_snippets = [f"Memory: {m}" for _, m in relevant]
+    prompt = f"Question: {query}\n" + "\n".join(context_snippets) + "\nAnswer:"
+    response = call_llm(prompt)
+    return response
+
+### Define Cells ###
+
+# A cell that watches the current query and automatically runs pipeline
+def query_response_cell(current_query):
+    if not current_query:
+        return "No query provided."
+    return run_pipeline(current_query)
+
+store.dispatch({
+    "type": "DEFINE_CELL",
+    "payload": {
+        "id": "response_cell",
+        "dependencies": [("context", "current_query")],
+        "compute_fn": query_response_cell
+    }
+})
+
+### Test the System ###
+
+# Add some memory entries
+add_to_memory("Python is a programming language.", metadata={"info": "basic fact about Python"})
+add_to_memory("Redux is used for predictable state management in JavaScript apps.", metadata={"info": "basic fact about Redux"})
+add_to_memory("LLMs are powerful text generation models.", metadata={"info": "basic fact about LLMs"})
+
+# Update the context with a query
+store.dispatch({"type": "UPDATE_CONTEXT", "payload": {"current_query": "What is Python?"}})
+
+# Now the cell should have computed a response automatically
+final_state = store.get_state()
+print("Response:", final_state["cells"]["response_cell"]["value"])
+
+# Change the query to see reactivity
+store.dispatch({"type": "UPDATE_CONTEXT", "payload": {"current_query": "Tell me about Redux."}})
+final_state = store.get_state()
+print("Response after query change:", final_state["cells"]["response_cell"]["value"])

@@ -1,0 +1,123 @@
+Final functional programing documentation 
+
+
+# Universal Problem Solver: A Functional Approach to LLM-Driven Problem Solving
+
+## Core Concept
+A universal problem solver that leverages Large Language Models (LLMs) through a simple but powerful state-based architecture, designed with functional programming principles.
+
+## Building Blocks
+
+### 1. Core Types
+```haskell
+State = Map CellId String × Optional CellId
+Config = Map PromptName String
+LLMResponse = String
+```
+
+### 2. Core Components
+- State representation (cells with content and current focus)
+- State transformation loop
+- LLM interface
+- Configuration system
+
+### 3. Core Functions
+```haskell
+solve : Query → State → Config → LLMInterface → Solution
+where solve(query, state, config, llm) = 
+    if isSolved(state) then getSolution(state)
+    else solve(query, nextState(state, llm(formatState(state))), config, llm)
+
+nextState : State → LLMResponse → State
+formatState : State → String
+parseResponse : LLMResponse → Either ErrorMessage State
+```
+
+### 4. Operational Flow
+1. Show current state to LLM
+2. Get next action or solution
+3. Parse and apply changes
+4. Repeat until solved
+
+### 5. Two Levels of Operation
+#### Base Level
+- Problem-solving loop using current configuration
+- State transformation through LLM interaction
+- Robust parsing and error handling
+
+#### Meta Level
+```haskell
+improveConfig : Code → Config → [Log] → Config
+```
+- Configuration improvement system
+- Self-analysis capabilities
+- System evolution through experience
+
+## Key Design Principles
+
+### 1. Functional Programming Concepts
+- Pure Functions: State transitions produce new states without mutation
+- Composition: System built from simple function compositions
+- Recursion: Main solving loop is recursive
+- Higher-Order Functions: LLM interface and config improvement system
+- Immutability: States and configurations are immutable
+
+### 2. Core System as Function Composition
+```haskell
+solve = getSolution ∘ iterate (nextState ∘ llm ∘ formatState)
+```
+
+### 3. Essential Loop
+```haskell
+solve query = 
+    fix (λstate → 
+        if isSolved state 
+        then state
+        else nextState (llm (formatState state)))
+```
+
+## Interfaces
+
+### 1. State → Text
+- Converting internal state to LLM-readable format
+- Clear, consistent representation
+
+### 2. LLM Response → State Changes
+- Robust parsing of LLM outputs
+- Error handling and recovery
+- Multiple fallback mechanisms
+
+### 3. Meta-Level Interface
+- Code + Config + Logs → Improved Config
+- Self-improvement capability
+- Configuration evolution
+
+## Safety and Robustness
+
+### 1. Error Handling
+- Graceful handling of malformed LLM responses
+- Multiple fallback levels
+- State validity preservation
+
+### 2. Separation of Concerns
+- Clear separation between code and configuration
+- Isolated LLM interaction
+- Pure functional core
+
+## Power Through Simplicity
+The system's effectiveness comes from:
+1. Simple, composable pieces
+2. Clear functional design
+3. Trust in LLM capabilities
+4. Robust error handling
+5. Self-improvement capacity
+
+The architecture combines the mathematical elegance of functional programming with practical robustness, creating a system that can:
+- Solve complex problems
+- Recover from errors
+- Improve its own operation
+- Maintain consistency and reliability
+
+All of this is achieved through the composition of simple, well-defined functions and types, following the principle that complex behavior can emerge from simple, well-designed components interacting through clear interfaces.
+
+

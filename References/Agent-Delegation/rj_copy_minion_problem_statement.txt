@@ -1,0 +1,13 @@
+Problem: Implement a function that finds the prime factors of a given number.
+
+Create a Python function named 'prime_factorize(n)' that takes a positive integer 'n' as input and returns a list of its prime factors in ascending order.
+
+Requirements:
+1. The function should handle inputs up to 10^6 efficiently.
+2. The function should return an empty list if n < 2.
+3. If n is prime, the function should return [n].
+
+Examples:
+- prime_factorize(12) should return [2, 2, 3]
+- prime_factorize(13) should return [13]
+- prime_factorize(100) should return [2, 2, 5, 5]

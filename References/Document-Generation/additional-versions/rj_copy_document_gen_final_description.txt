@@ -1,0 +1,68 @@
+Final description
+
+
+Here are the core goals and solutions of our system:
+Core Goals:
+
+Enable LLMs to handle tasks that are currently impossible due to their limitations:
+
+Exact computations with large numbers
+Writing/editing very long documents
+Maintaining perfect consistency across complex tasks
+Managing detailed state without errors
+
+
+Allow LLMs to work beyond their context window limitations while maintaining reliability
+
+Key Ideas We've Used:
+
+Cell-Based Memory:
+
+Break information into manageable chunks (cells)
+Each cell contains text that the LLM can easily process
+Cells can reference other cells, creating a network of information
+LLM never needs to hold all information at once
+
+
+State Management:
+
+Explicit tracking of current status and progress
+Clear documentation of what has been done and what's next
+Ability to checkpoint and resume complex operations
+Prevention of information loss during long processes
+
+
+Self-Documenting Approach:
+
+LLM creates its own conventions and documents them
+System maintains records of how it's organizing information
+Clear trails of decision-making and progress
+Ability to review and understand previous work
+
+
+Navigation and Access:
+
+Directory system for finding information
+Working set tracking for frequently used data
+Ability to move between cells without loading everything
+Efficient search and retrieval
+
+
+Task-Agnostic Design:
+
+Same basic system works for any type of task
+No built-in assumptions about problem types
+LLM decides how to structure each specific problem
+Flexible enough for computation, writing, or analysis
+
+
+
+The core insight is that by breaking tasks into small, manageable pieces and maintaining explicit state, we can help LLMs overcome their limitations while leveraging their strengths in understanding and processing text.
+For example:
+
+For large computations: Break them into single-digit operations
+For long documents: Maintain structure and cross-references between sections
+For complex tasks: Track progress and state explicitly
+For consistency: Keep clear records and references
+
+The system acts like an external memory and organization tool that lets the LLM focus on what it does best - understanding and processing small pieces of text - while managing the larger structure of the task automatically.

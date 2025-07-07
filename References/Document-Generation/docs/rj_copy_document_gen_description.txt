@@ -1,0 +1,72 @@
+Final Description with Graph and tools 
+
+
+At a high level, this is an AI orchestration system that breaks down complex problems into manageable pieces while maintaining structure and state. Here are the key building blocks:
+
+1. Core State Management:
+- `SystemState`: The immutable central state container
+  - Holds content cells
+  - Tracks relationships between cells (hierarchy/references)
+  - Tracks current focus of attention
+  - Manages tasks
+- All state transitions are explicit and trackable
+
+2. Content Units:
+- `CellContent`: The atomic unit of information
+  - Can contain text
+  - Can contain tool calls
+  - Can contain tasks
+- `CellRelations`: Defines how cells connect
+  - Parent-child relationships for hierarchy
+  - References for cross-linking
+  - Enables building larger structures from small pieces
+
+3. Tool System:
+- Defined set of operations available to the LLM
+- Each tool is a pure function: input → output
+- Tools for:
+  - Basic operations (calculator, weather)
+  - Task management (create_task, list_tasks)
+  - State manipulation
+
+4. Task Management:
+- `Task`: Structured units of work
+  - Description and priority
+  - Status tracking
+  - Dependencies
+  - Timestamps
+- Built on top of existing cell structure
+
+5. LLM Interface:
+- Structured prompt format
+- Clear protocol for:
+  - State examination
+  - Tool usage
+  - Task creation
+  - Solution declaration
+- Multiple fallback mechanisms
+
+6. Problem-Solving Loop:
+- Initialize state from query
+- Repeatedly:
+  - Show current state to LLM
+  - Get next action/state
+  - Execute tools if needed
+  - Update state
+  - Check for solution
+- Maintain history of all steps
+
+The system is built like a "conversational operating system" where:
+- The LLM is the decision maker
+- Tools are like system calls
+- Cells are like memory blocks
+- Tasks are like processes
+- State transitions are like transactions
+
+Everything is designed to be:
+- Immutable (state changes create new states)
+- Trackable (all changes are recorded)
+- Composable (small pieces build larger structures)
+- Recoverable (multiple fallback mechanisms)
+- Extensible (new tools/capabilities can be added)
+

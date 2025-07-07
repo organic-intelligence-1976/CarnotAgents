@@ -1,0 +1,37 @@
+Final description 
+
+Here are the key building blocks of our final system:
+
+1. Core Components:
+   - A state representation (cells with content and a current focus)
+   - A simple state transformation loop
+   - An LLM interface that processes state and suggests next steps
+   - Configuration that defines how to interact with the LLM
+
+2. Operational Flow:
+   - Show current state to LLM
+   - Get next action or solution
+   - Parse and apply changes
+   - Repeat until solved
+
+3. Two Levels of Operation:
+   - Base Level: The problem-solving loop using current configuration
+   - Meta Level: The configuration improvement system that can analyze and enhance the solver
+
+4. Key Interfaces:
+   - State → Text (for LLM consumption)
+   - LLM Response → State Changes
+   - Code + Config + Logs → Improved Config
+
+5. Safety/Robustness Features:
+   - Graceful handling of malformed LLM responses
+   - Fallback mechanisms when things go wrong
+   - Clear separation between code and configuration
+
+The system is essentially a simple state machine where:
+- The state is just text in cells
+- The transition function is the LLM
+- The rules for interaction are in the config
+- The whole system can improve itself through meta-analysis
+
+The power comes from combining these simple pieces in a way that leverages the LLM's capabilities while maintaining robustness and flexibility.
