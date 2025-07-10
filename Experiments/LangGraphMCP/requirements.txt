@@ -1,0 +1,19 @@
+# Core dependencies for LangGraph + MCP experiment
+langgraph>=0.0.20
+langchain-core>=0.1.0
+
+# LLM providers
+langchain-openai>=0.0.5
+langchain-anthropic>=0.0.5
+langchain-google-genai>=0.0.5
+langchain-community>=0.0.10  # For Ollama/local models
+
+# For Ollama (local Llama models)
+ollama>=0.1.0
+
+# Optional but recommended
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# For async support in notebooks
+nest-asyncio>=1.5.0
