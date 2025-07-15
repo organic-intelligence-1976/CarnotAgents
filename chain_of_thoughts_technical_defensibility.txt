@@ -7,7 +7,7 @@ TECHNICAL REALITY CHECK
 WHAT WE HAVE:
 • Renaissance-Personal: Working document-driven iterative system
 • LangGraph+MCP: Multi-LLM orchestration with structured agents
-• Carnot efficiency concept: Novel application of thermodynamic principles to AI
+• CarnotAgents concept: Novel approach to AI agent optimization
 • Document-centric architecture: XML-like progressive refinement approach
 • Self-improvement mechanisms: Multi-scale optimization cycles
 
@@ -68,8 +68,8 @@ DOCUMENT-AS-STATE PARADIGM:
 GENUINELY NEW IDEAS (COMPETITIVE MOAT)
 ================================================================================
 
-CARNOT EFFICIENCY PRINCIPLE:
-• Novel: Applying thermodynamic efficiency to AI agent cycles
+AGENT OPTIMIZATION ARCHITECTURE:
+• Novel: Unique approach to maximizing agent output per computational input
 • Defensible: Creates unique optimization targets others won't pursue
 • Practical: Enterprises care deeply about cost/performance ratios
 • Time advantage: 6-12 months before others recognize importance
@@ -122,7 +122,7 @@ PHASE 1 (0-3 MONTHS):
 • Polish Renaissance-Personal into production-ready system
 • Build efficiency metrics and benchmarking framework
 • Create demo showing 10x efficiency gain for specific use case
-• File provisional patents on Carnot principle application
+• File provisional patents on agent optimization methods
 
 PHASE 2 (3-6 MONTHS):
 • Implement basic multi-agent orchestration
@@ -176,7 +176,7 @@ BRUTAL HONESTY ASSESSMENT
 ================================================================================
 
 WHAT'S ACTUALLY DEFENSIBLE:
-• Carnot efficiency principle is genuinely novel application
+• Agent optimization approach is genuinely novel application
 • Document-centric approach different enough to create friction
 • Self-improvement with safety constraints is unexplored territory
 • Multi-framework integration with efficiency focus is unique
@@ -213,7 +213,7 @@ AVOID THESE TECHNICAL TRAPS:
 THE BOTTOM LINE
 ================================================================================
 
-We have 2-3 genuinely interesting technical ideas (Carnot efficiency, homoiconic agents, document-as-state) that could provide 6-18 months of competitive advantage. This is enough time to establish a beachhead in a specific vertical and build proprietary optimizations that create lasting value.
+We have 2-3 genuinely interesting technical ideas (agent optimization, homoiconic agents, document-as-state) that could provide 6-18 months of competitive advantage. This is enough time to establish a beachhead in a specific vertical and build proprietary optimizations that create lasting value.
 
 The key is to resist the temptation to build a general-purpose platform and instead focus ruthlessly on efficiency metrics for a specific domain where we can prove dramatic improvements.
 

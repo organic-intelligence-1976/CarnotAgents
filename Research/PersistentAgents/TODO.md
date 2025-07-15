@@ -15,8 +15,8 @@
 - [ ] Create research bibliography and reference system
 
 ### CarnotAgents Integration Planning
-- [ ] Identify specific synergies between persistent agents and Carnot efficiency
-- [ ] Plan technical experiments combining persistence with efficiency principles
+- [ ] Identify specific synergies between persistent agents and Carnot optimization
+- [ ] Plan technical experiments combining persistence with optimization principles
 - [ ] Document potential integration architectures
 - [ ] Define research questions for combined approach
 
@@ -43,10 +43,10 @@
 ## Medium-term Objectives (This Quarter)
 
 ### Research Contributions
-- [ ] Develop novel approach combining Carnot efficiency with persistence
+- [ ] Develop novel approach combining Carnot optimization with persistence
 - [ ] Publish technical blog posts or papers on findings
 - [ ] Create open-source tools for persistent agent development
-- [ ] Establish thought leadership in efficient persistent agents
+- [ ] Establish thought leadership in optimized persistent agents
 
 ### Business Validation
 - [ ] Prototype domain-specific persistent agent solutions
@@ -65,7 +65,7 @@
 ### Research Success
 - Comprehensive landscape documentation completed
 - Novel technical insights documented and shared
-- Integration between persistence and efficiency principles demonstrated
+- Integration between persistence and optimization principles demonstrated
 - Academic and industry network established in this space
 
 ### Commercial Success  
@@ -83,7 +83,7 @@
 ## Research Questions to Investigate
 
 ### Technical Questions
-1. How can Carnot efficiency principles optimize persistent agent resource usage?
+1. How can Carnot optimization principles optimize persistent agent resource usage?
 2. What memory compression techniques work best for long-term reasoning?
 3. How can self-evaluation be automated for persistent reasoning quality?
 4. What safety mechanisms are needed for autonomous persistent agents?

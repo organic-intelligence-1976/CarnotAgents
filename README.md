@@ -1,14 +1,14 @@
 # CarnotAgents
 
-A comprehensive LLM agent system inspired by the Carnot engine principle - maximizing efficiency in transforming requests into completed work through iterative cycles.
+A comprehensive LLM agent system focused on maximizing efficiency in transforming requests into completed work through iterative cycles.
 
 ## Overview
 
-CarnotAgents combines advanced LLM framework integration with autonomous agent architectures to create systems that can receive requests or questions and iteratively work on them to move entire projects and documents forward. Like a Carnot engine achieving maximum thermodynamic efficiency, these agents optimize the conversion of input queries into valuable output through systematic, iterative processes.
+CarnotAgents combines advanced LLM framework integration with autonomous agent architectures to create systems that can receive requests or questions and iteratively work on them to move entire projects and documents forward. These agents optimize the conversion of input queries into valuable output through systematic, iterative processes.
 
 ## Core Architecture
 
-### 1. Carnot Framework Components
+### 1. Core Framework Components
 - **Agent Delegation Systems**: Hierarchical agent coordination and task distribution
 - **Document Generation Pipelines**: Autonomous document creation and enhancement systems  
 - **Self-Improving Architectures**: Systems that evolve and optimize their own processes
@@ -37,11 +37,11 @@ CarnotAgents combines advanced LLM framework integration with autonomous agent a
 
 ## Key Features
 
-### Carnot Engine Principles Applied to LLM Agents
+### Core Principles for LLM Agents
 1. **Maximum Efficiency**: Optimal conversion of inputs to outputs through systematic processes
 2. **Iterative Cycles**: Continuous improvement through repeated work cycles
-3. **Thermodynamic Optimization**: Minimizing waste while maximizing productive work
-4. **Reversible Processes**: Ability to trace and reverse agent reasoning chains
+3. **Resource Optimization**: Minimizing waste while maximizing productive work
+4. **Traceable Processes**: Ability to trace and reverse agent reasoning chains
 
 ### Agent Capabilities
 - **Autonomous Task Execution**: Agents that can independently work on complex requests
@@ -101,7 +101,7 @@ improved_docs = pipeline.iterative_enhancement(docs, improvement_cycles=3)
 
 ### PersistentAgents Research Integration
 - Share memory management and long-term context techniques
-- Apply Carnot efficiency principles to persistent reasoning loops
+- Apply efficiency optimization principles to persistent reasoning loops
 - Combine efficient agent cycles with continuous reasoning capabilities
 - Cross-pollinate commercial market insights and technical approaches
 
@@ -125,7 +125,7 @@ improved_docs = pipeline.iterative_enhancement(docs, improvement_cycles=3)
 ### Adding New Agent Types
 1. Extend base agent classes in `/Agents/`
 2. Implement framework-specific adapters if needed
-3. Follow Carnot efficiency principles (maximize output per input)
+3. Follow efficiency principles (maximize output per input)
 4. Include self-improvement and reflection capabilities
 
 ### Framework Integration
@@ -157,7 +157,7 @@ See `requirements.txt` for complete dependency list including:
 5. **Specialized Agent Types**: Domain-specific agents for different problem types
 
 ### Research Directions
-1. **Carnot Optimization**: Mathematical optimization of agent efficiency
+1. **Agent Optimization**: Mathematical optimization of agent efficiency
 2. **Emergent Behaviors**: Study of complex behaviors from simple agent rules
 3. **Human-Agent Collaboration**: Optimal patterns for human-AI cooperation
 4. **Meta-Learning**: Agents that learn how to learn more effectively
@@ -165,7 +165,7 @@ See `requirements.txt` for complete dependency list including:
 ## Contributing
 
 When contributing to CarnotAgents:
-1. Follow the Carnot efficiency principle - maximize value per computational cycle
+1. Follow the efficiency principle - maximize value per computational cycle
 2. Ensure compatibility across all supported LLM frameworks
 3. Include comprehensive tests and documentation
 4. Consider both autonomous and human-collaborative usage patterns

@@ -2,7 +2,7 @@
 
 ## Vision
 
-CarnotAgents aims to create the most efficient LLM agent system by applying Carnot engine principles to autonomous AI work cycles. Just as the Carnot engine represents the theoretical maximum efficiency for converting heat into work, CarnotAgents will achieve maximum efficiency in converting user requests into completed projects through systematic, iterative agent processes.
+CarnotAgents aims to create the most efficient LLM agent system by applying Carnot optimization principles to autonomous AI work cycles. CarnotAgents will achieve maximum efficiency in converting user requests into completed projects through systematic, iterative agent processes.
 
 ## Mission
 
@@ -15,10 +15,10 @@ To develop a unified LLM agent ecosystem that:
 
 ## Core Principles
 
-### 1. Carnot Efficiency Principle
-Like the thermodynamic Carnot cycle achieving maximum efficiency between two temperature reservoirs, CarnotAgents optimizes the conversion of:
-- **Input Reservoir**: User requests, questions, project requirements
-- **Output Reservoir**: Completed work, improved documents, advanced projects
+### 1. Carnot Optimization Principle
+CarnotAgents optimizes the conversion of:
+- **Input**: User requests, questions, project requirements
+- **Output**: Completed work, improved documents, advanced projects
 - **Work Cycle**: Systematic agent processes that maximize productive transformation
 
 ### 2. Iterative Improvement
@@ -68,7 +68,7 @@ The merger creates capabilities neither project could achieve independently:
 ### Core Components
 
 **Agent Engine Core:**
-- Carnot cycle implementation for request processing
+- Carnot optimization implementation for request processing
 - Framework adapter layer for universal compatibility
 - State management and persistence systems
 - Performance monitoring and optimization
@@ -106,7 +106,7 @@ The merger creates capabilities neither project could achieve independently:
 - Establish inter-agent communication protocols
 
 **Phase 3: Optimization and Enhancement**
-- Implement Carnot efficiency optimization algorithms
+- Implement Carnot optimization algorithms
 - Develop learning and adaptation mechanisms
 - Create advanced multi-agent coordination patterns
 - Establish performance monitoring and analytics
@@ -139,7 +139,7 @@ The merger creates capabilities neither project could achieve independently:
 
 ## Long-Term Vision
 
-CarnotAgents will become the central nervous system for autonomous AI work within the HQ ecosystem. By achieving Carnot-level efficiency in converting user requests into completed work, it will enable:
+CarnotAgents will become the central nervous system for autonomous AI work within the HQ ecosystem. By achieving Carnot-level optimization in converting user requests into completed work, it will enable:
 
 - **Autonomous Project Management**: Complete projects managed end-to-end by agents
 - **Intelligent Document Evolution**: Documents that continuously improve and update themselves
@@ -159,4 +159,4 @@ The ultimate goal is creating an AI ecosystem where complex, multi-step projects
 6. **Integration Testing**: Validate compatibility across frameworks and use cases
 7. **Documentation**: Create comprehensive guides for development and usage
 
-CarnotAgents represents the convergence of theoretical efficiency principles with practical LLM agent implementation, creating a foundation for the most efficient autonomous AI work system possible.
+CarnotAgents represents the convergence of optimization principles with practical LLM agent implementation, creating a foundation for the most efficient autonomous AI work system possible.

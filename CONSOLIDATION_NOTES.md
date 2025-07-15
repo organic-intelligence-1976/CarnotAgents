@@ -29,7 +29,7 @@ As mentioned, CarnotAgents materials are scattered in multiple locations. Please
    - LlamaIndex
 
 3. **Key Concepts**
-   - Carnot efficiency principle applied to AI
+   - Carnot optimization principle applied to AI
    - Iterative improvement cycles
    - Framework-agnostic design
    - Autonomous operation
@@ -50,6 +50,6 @@ As mentioned, CarnotAgents materials are scattered in multiple locations. Please
 
 ## Questions to Address
 - What specific problem domains are we targeting?
-- How do we measure "efficiency" in the Carnot sense?
+- How do we measure "efficiency" in the optimization sense?
 - What are the key differentiators from generic agent systems?
 - How do we handle agent coordination and communication?

@@ -10,7 +10,7 @@ CarnotAgents is an ambitious but fragmented repository combining three different
 
 The repository attempts to merge three distinct visions:
 
-1. **Carnot Engine Principle**: Maximizing efficiency in LLM agent work cycles (theoretical framework)
+1. **Carnot Principle**: Maximizing efficiency in LLM agent work cycles (optimization framework)
 2. **LLM Framework Integration**: Multi-framework support (LangChain, AutoGen, LiteLLM, LlamaIndex)
 3. **Various Agent Systems**: Multiple incompatible agent architectures from different projects
 
@@ -137,7 +137,7 @@ CarnotAgents/
    - Write honest documentation about current state
 
 2. **Phase 2**: Build on what works
-   - Extend Renaissance with Carnot efficiency tracking
+   - Extend Renaissance with Carnot performance tracking
    - Implement one real framework adapter (suggest LiteLLM for simplicity)
    - Create working examples
 
@@ -151,16 +151,16 @@ CarnotAgents/
 1. **Documentation Debt**: The repository has far more documentation than implementation
 2. **Renaissance Works**: The Renaissance system is the only truly functional component
 3. **Framework Integration Incomplete**: Multi-framework support is mostly aspirational
-4. **Carnot Principle Undefined**: The efficiency maximization principle lacks concrete implementation
+4. **Carnot Principle Undefined**: The efficiency optimization principle lacks concrete implementation
 
 ## Recommendations
 
 1. **Be Honest**: Update documentation to reflect actual state
 2. **Build on Renaissance**: Use it as the foundation rather than starting fresh
-3. **Define Carnot Efficiency**: Create concrete metrics and implementation
+3. **Define Carnot Optimization**: Create concrete metrics and implementation
 4. **One Framework First**: Get one framework integration working before adding others
 5. **Simplify Structure**: Remove redundant implementations and consolidate vision
 
 ## Conclusion
 
-CarnotAgents has valuable ideas and some working code, but suffers from trying to merge incompatible systems. The Renaissance-Personal implementation provides a solid foundation that can be extended with Carnot efficiency principles and multi-framework support. The key is to prune aggressively, build on what works, and be honest about the current state versus the aspirational vision.
+CarnotAgents has valuable ideas and some working code, but suffers from trying to merge incompatible systems. The Renaissance-Personal implementation provides a solid foundation that can be extended with Carnot optimization principles and multi-framework support. The key is to prune aggressively, build on what works, and be honest about the current state versus the aspirational vision.

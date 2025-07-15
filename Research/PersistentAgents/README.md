@@ -51,17 +51,17 @@ PersistentAgents research complements and informs the CarnotAgents project in se
 ### Technical Synergies
 - **Memory Systems**: Long-term memory approaches applicable to CarnotAgents
 - **Self-Reflection**: Reflexion and self-critique mechanisms for agent improvement
-- **Planning Architectures**: Tree-of-Thoughts integration with Carnot efficiency principles
+- **Planning Architectures**: Tree-of-Thoughts integration with Carnot optimization principles
 - **Commercial Validation**: Market evidence for agent system viability
 
 ### Differentiation
 - **PersistentAgents**: Focus on continuous, always-on reasoning systems
-- **CarnotAgents**: Focus on efficient, thermodynamically-inspired agent cycles
-- **Convergence Point**: Efficient persistent agents with optimal energy/performance trade-offs
+- **CarnotAgents**: Focus on efficient, optimization-driven agent cycles
+- **Convergence Point**: Efficient persistent agents with optimal resource/performance trade-offs
 
 ### Research Integration
-- Persistent agent memory systems → CarnotAgents long-term efficiency
-- CarnotAgents efficiency principles → Persistent agent resource optimization
+- Persistent agent memory systems → CarnotAgents long-term performance
+- CarnotAgents optimization principles → Persistent agent resource optimization
 - Combined approach: Efficient persistent agents with optimal resource utilization
 
 ## Current Research Questions
@@ -69,7 +69,7 @@ PersistentAgents research complements and informs the CarnotAgents project in se
 ### Technical Challenges
 1. **Memory Compression**: How to maintain reasoning context without exponential storage growth?
 2. **Auto-Evaluation**: How to measure reasoning depth and quality automatically?
-3. **Resource Management**: How to balance persistence with computational efficiency?
+3. **Resource Management**: How to balance persistence with computational optimization?
 4. **Safety Mechanisms**: How to implement robust guard-rails for autonomous systems?
 
 ### Commercial Opportunities
@@ -90,7 +90,7 @@ PersistentAgents research complements and informs the CarnotAgents project in se
 - [ ] Implement core persistent agent architecture
 - [ ] Develop memory compression algorithms
 - [ ] Create self-evaluation frameworks
-- [ ] Test integration with CarnotAgents efficiency principles
+- [ ] Test integration with CarnotAgents optimization principles
 
 ### Phase 3: Commercial Validation
 - [ ] Identify specific vertical market opportunities
@@ -122,7 +122,7 @@ PersistentAgents research complements and informs the CarnotAgents project in se
 ### Research Metrics
 - Comprehensive landscape documentation and analysis
 - Novel technical contributions to persistent agent architectures
-- Integration insights between persistence and efficiency (Carnot connection)
+- Integration insights between persistence and optimization (Carnot connection)
 - Publication and open-source contribution opportunities
 
 ### Commercial Metrics
