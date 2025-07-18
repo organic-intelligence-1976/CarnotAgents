@@ -20,7 +20,7 @@ from typing import Dict, List, Any, Optional
 try:
     from autogen import ConversableAgent
 except ImportError:
-    print("AutoGen is not installed. Please install it using: pip install pyautogen")
+    print("AutoGen is not installed. Please install it using: pip install ag2")
     print("For more information, visit: https://github.com/microsoft/autogen")
 
 
