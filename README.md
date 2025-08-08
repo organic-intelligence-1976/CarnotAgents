@@ -2,6 +2,8 @@
 
 A comprehensive LLM agent system focused on maximizing efficiency in transforming requests into completed work through iterative cycles.
 
+> **Note**: This repository is currently in active development. The architecture and design patterns are established, but implementation is ongoing. Contributions and feedback are welcome!
+
 ## Overview
 
 CarnotAgents combines advanced LLM framework integration with autonomous agent architectures to create systems that can receive requests or questions and iteratively work on them to move entire projects and documents forward. These agents optimize the conversion of input queries into valuable output through systematic, iterative processes.
